@@ -1,0 +1,2 @@
+# arkkitehtuuriharjoitustyo
+Ohjelmistoarkkitehtuurien harjoitustyö
