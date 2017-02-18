@@ -106,10 +106,10 @@
 % The following commands define the information used to generate title and
 % abstract pages. The following entries should be always specified:
 
-\title{Ohjelmistoarkkitehtuurien harjoitustyö}
-\author{Eveliina Pakarinen}
+\title{AngularJS web-sovelluskehys}
+\author{Eveliina Pakarinen, 014152724}
 \date{\today}
-\level{Harjoitustyö}
+\level{Ohjelmistoarkkitehtuurien harjoitustyö}
 \abstract{}
 
 % The following can be used to specify keywords and classification of the paper:
@@ -169,13 +169,11 @@
 
 Perinteisiä ohjelmistojen testausmenetelmiä on olioperustaisen ohjelmoinnin kehityksen myötä sopeutettu uusiin olio-ohjelmoinnin mukana tuleviin haasteisiin. Olio-ohjelmoinnin avulla voidaan ratkaista joitakin proseduraalisen ohjelmoinnin ongelmia~\cite[s. 86]{Mariani:Pezze:2008}. O\-li\-o-oh\-jel\-moin\-nin piirteet, kuten kapselointi ja perintä, aiheuttavat kuitenkin uusia ongelmia, jotka vaativat uusien testaus- ja analysointimenetelmien kehittämistä.
 
-
-
-\section{Testaus oliojärjestelmissä}
+\section{Kehyksen esittely}
 
 Olioperustaisen ohjelmoinnin kehityksen myötä klassisia ohjelmistojen testausmenetelmiä on sopeutettu mahdollistamaan \textit{oliojärjestelmien} (\textit{object oriented systems}) kattava ja laadukas testaaminen. Vaikka olioperustainen ohjelmointi ratkaisee joitakin proseduraalisen ohjelmoinnin suunnittelu- ja toteutusongelmia, olio-ohjelmoinnin mukana tulevat uudet haasteet vaativat uusien testaus- ja analysointimenetelmien kehittämistä~\cite[s. 86]{Mariani:Pezze:2008}. 
 
-\subsection{Testauksen rooli}
+\subsection{Arkkitehtuurityylit}
 
 IEEE:n standardin mukaan \textit{ohjelmointivirheen} (\textit{error}) aiheuttamaa ohjelmiston lähdekoodiin päässyttä virheellistä kohtaa kutsutaan \textit{viaksi} (\textit{fault})~\cite[s. 5]{IEEE:2009}. Lähdekoodissa oleva vika saattaa ohjelman suoritusaikana ilmetä \textit{virheenä} (\textit{failure})~\cite[s. 5]{IEEE:2009}. Virhe ilmenee, kun ohjelma ei suorituksen aikana toimi odotetulla tavalla.
 
@@ -183,14 +181,15 @@ Testausta käytetään ohjelmistokehityksessä ohjelmiston laadun varmistamiseen
 
 Olio-ohjelmoinnissa testaukseen tuovat haasteita olio-ohjelmien erityispiirteet, joita ovat muun muuassa kapselointi, perintä, dynaaminen sidonta ja polymorfismi~\cite[s. 86]{Mariani:Pezze:2008}.
 
+\subsection{Komponenttien roolijako}
 
 % \newpage
 
-\section{Mutaatiotestaus}
+\section{Kehyksen arkkitehtuuri}
 
 Testaukseen sisältyvien rajoitusten lisäksi testaukseen liittyy myös epävarmuutta käytettävän testausjärjestelmän oikeellisuudesta ja oikeellisuuden varmistamisesta~\cite[s. 209]{Manna:Waldinger:1978}. Tämä herättää kysymyksen siitä, kuka voi ''valvoa valvojia'' eli kuinka varmistetaan ohjelmiston testien laadukkuus. Yksi menetelmä testien laadun selvittämiseen on \textit{mutaatiotestaus}. Mutaatiotestauksen avulla voidaan mitata, kuinka tehokkaasti ohjelmiston testeillä havaitaan ohjelmistossa esiintyviä vikoja~\cite[s. 649]{Jia:Harman:2011}.
 
-\subsection{Historia ja teoreettinen perusta}
+\subsection{Yleisarkkitehtuuri}
 
 Mutaatiotestauksesta kirjoitettiin ensimmäistä kertaa jo 1970-luvulla. Richard DeMillon, Richard Liptonin ja Frederick Saywardin artikkeli ''\textit{Hints on Test Data Selection: Help for the Practicing Programmer}''~\cite{DeMillo:Lipton:Sayward:1978} vuodelta 1978 on yksi ensimmäisistä uraauurtavista mutaatiotestausta esittelevistä artikkeleista. Mutaatiotestauksen tutkimus on lisääntynyt vuosien kuluessa, ja erityisesti 2000-luvulla uusia tutkimuksia ja tuloksia on julkaistu paljon~\cite[s. 1102]{Offutt:2011}. Tutkimuksessa suuntana on ollut etsiä keinoja, joilla mutaatiotestaus voidaan muuttaa käytännölliseksi testausmenetelmäksi~\cite[s. 649]{Jia:Harman:2011}. 
 
@@ -200,7 +199,7 @@ Jefferson Offutt määritteli artikkelissaan yksinkertaiset ja monimutkaiset via
   \item \textit{Monimutkaista vikaa} ei voi korjata tekemällä yksittäistä muutosta lähdekoodin lauseeseen.
 \end{itemize}
 
-\subsection{Perinteinen mutaatiotestausprosessi}
+\subsection{Keskeisimmät variaatiopisteet}
 
 Perinteisen mutaatiotestausprosessin syötteinä käytetään alkuperäistä ohjelmistoa ja ohjelmistoa testaavia testejä. Mutaatiotestausprosessin aikana olemassa olevien testien laatua kehitetään vaiheittain. Perinteisen mutaatiotestausprosessin työvaiheet on esitelty kuvassa %\ref{figure:Mutaatiotestausprosessi}. Työvaiheet on merkitty kuvaan sinisillä laatikoilla. Työvaiheiden aikana käytettäviä resursseja, kuten ohjelmiston lähdekoodia ja testituloksia, kuvataan vihreillä ja keltaisilla laatikoilla.
 
@@ -248,17 +247,15 @@ public class Elainkauppa extends Kauppa {
 
 \vspace{1\baselineskip}On todistettu, että ekvivalenttien mutanttien tunnistaminen algoritmisesti yleisessä tapauksessa on ratkaisematon ongelma~\cite[s. 79]{Offutt:Ma:Kwon:2006:MuClassLevel}. Ongelma on kuitenkin herättänyt runsaasti teoreettista kiinnostusta, ja mahdollisia tunnistamistekniikoita on tutkittu paljon~\cite[s. 657]{Jia:Harman:2011}. Ekvivalenttien mutanttien tunnistamiseksi on kehitetty heuristiikkoja, joiden avulla tunnistamisongelma voidaan ratkaista osittain~\cite[s. 79]{Offutt:Ma:Kwon:2006:MuClassLevel}.
 
+\section{Kehyksen arviointi}
+
+Tekstiä
+
+\subsection{Laatuskenaariot}
+
 \section{Yhteenveto}
 
 Olioperustaisen ohjelmoinnin mukana tulevien uusien haasteiden kohtaaminen vaatii muutoksia ohjelmistojen testausmenetelmiin. Sekä perinteisiä olemassa olevia että uusia testausmenetelmiä kehitetään, jotta olio-ohjelmia voidaan testata kattavasti ja laadukkaasti. 
-
-Perinteisessä ohjelmistotestauksessa keskitytään ohjelmiston toiminnallisuuden testaamiseen ja vikojen etsimiseen ohjelmistosta. Perinteiseen ohjelmistotestaukseen liittyy kuitenkin haasteita ja rajoituksia, jotka aiheuttavat testaukseen epävarmuutta. Yksi haasteista on määrittää, ovatko testauksessa käytettävät testit ja testausjärjestelmä riittävän luotettavia, jotta niiden avulla ohjelmistoa voidaan testata laadukkaasti.
-
-Mutaatiotestaus on vikaperustainen testausmenetelmä, joka tarjoaa ratkaisun testien laadun määrittämiseen liittyvään haasteeseen. Mutaatiotestauksen avulla voidaan mitata ohjelmistoa varten tehtyjen testien kykyä havaita ohjelmistossa esiintyviä vikoja. Mutaatiotestausmenetelmän avulla on siis mahdollista kehittää olemassa olevia testejä ja parantaa testien laatua.
-
-Mutaatiotestauksen käyttö yleisesti osana testausprosessia on kuitenkin vähäistä mutaatiotestaukseen liittyvien haasteiden ja ratkaisemattomien ongelmien takia. Mutaatiotestausta on tutkittu paljon, ja tutkimuksen tavoitteena on ollut etsiä ratkaisuja mutaatiotestaukseen liittyviin ongelmiin. Tutkimuksesta saatujen tietojen pohjalta ongelmiin on kehitetty osittaisia ratkaisuja, joiden avulla mutaatiotestausprosessi on mahdollista automatisoida lähes kokonaan.
-
-Jotta mutaatiotestausmenetelmää voitaisiin tulevaisuudessa hyödyntää aiempaa enemmän tutkimuskäytön ulkopuolella, mutaatiotestauksen käyttöönoton helpottamiseksi olisi kehitettävä automatisoituja mutaatiotestausjärjestelmiä, joissa hyödynnetään mutaatiotestauksen ongelmien ratkaisumenetelmiä. Automatisoitujen mutaatiotestausjärjestelmien avulla mutaatiotestausmenetelmän laaja-alainen käyttö osana ohjelmistokehitystä voisi tulevaisuudessa olla mahdollista.
 
 
 
