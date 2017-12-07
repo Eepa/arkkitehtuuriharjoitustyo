@@ -4,7 +4,6 @@
 \RequirePackage[pass]{geometry}[2010/09/12 v5.6 Page Geometry]
 \RequirePackage{babel}
 
-
 \newif\if@grading
 \newif\if@lastpagecounter
 \newif\if@useclassification
@@ -36,12 +35,6 @@
 \ProcessOptions
 \LoadClass[titlepage,a4paper,11pt]{article}
 
-% Riviväli
-\usepackage{setspace}
-%\onehalfspacing
-%\setstretch{1,5}
-
-\linespread{1.3}
 
 % -- Setup for string commands --
 
