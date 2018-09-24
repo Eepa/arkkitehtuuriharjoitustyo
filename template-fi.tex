@@ -35,7 +35,9 @@
 \usepackage{hyperref}
 \usepackage{minted}
 \usepackage{listings}
+\usepackage[table,xcdraw]{xcolor}
 \usemintedstyle{vs}
+
 
 % Automatically set the PDF metadata fields
 \makeatletter
@@ -330,7 +332,7 @@ Yksi Angularin modulaarisuutta ja uudelleenkäytettävyyttä tukeva piirre on er
 
 \section{Kehyksen yleiskuva}
 
-Angular web-sovelluskehys pohjautuu modulaariseen komponenttipohjaiseen arkkitehtuurityyliin. Angular toteuttaa kuitenkin myös useita ohjelmistotason ratkaisumalleja, joita ovat esimerkiksi riippuvuusinjektio, yhdensuuntainen tiedonsiirto ja reaktiivinen ohjelmointi.
+Angular web-sovelluskehys pohjautuu modulaariseen komponenttipohjaiseen arkkitehtuurityyliin. Angular toteuttaa kuitenkin myös useita ohjelmistotason ratkaisumalleja, joita ovat esimerkiksi riippuvuusinjektio, yhdensuuntainen tiedonsiirto ja tarkkailija-suunnittelumallin käyttö.
 
 \subsection{Ohjelmistotason ratkaisumallit}
 
@@ -340,7 +342,10 @@ Toinen Angularissa sovellettavista ratkaisumalleista on \textit{yhdensuuntainen 
 
 Datasidonnan avulla näkymään sisältyvät templaatti ja komponentti voivat välittää tietoa toisilleen \cite{ArchitectureComponents}. Lisäksi Angular-sovelluksen puumaisen rakenteen vanhempi- ja lapsikomponentti voivat välittää tietoa toisilleen datasidonnan avulla \cite{ArchitectureComponents}. Datasidonnalla on siis tärkeä merkitys sovelluksen sisäisten osien kommunikaation kannalta \cite{ArchitectureComponents}. Kahdensuuntaisessa datasidonnassa syötekenttä voi saada lähtöarvon komponentilta \textit{source-to-view}-sidonnan avulla ja käyttäjän tekemän muutoksen jälkeen muuttunut sisältö päivittyy takaisin komponentille \textit{view-to-source}-sidonnalla. 
 
-TODO: Reaktiivinen ohjelmointi!!!!!!!!!!!!!!! Observable-datavirta, käytössä Angularin coressa, ajaxin sijaan (??) \textit{Mika: Reaktiivisuuden huono puoli --> jos on paljon riippuvuuksia ja kuuntelee streameja voi tapahtua omituisia asioita toisessa palvelussa kun toinen palvelu ehtinyt jo muuttaa tilaa}
+Tarkkailija-suunnittelumallia käytetään Angularissa muun muassa tapahtumien lähettämisessä tapahtumien kuuntelijoille ja asynkronisten HTTP-pyyntöjen ja vastausten käsittelyssä \cite{ObservablesInAngular}. Tarkkailija-suunnittelumallissa tarkkailija voi rekisteröityä tapahtumia tuottavalle tapahtumien lähteelle \cite{Ohjelmistoarkkitehtuurit}. Angularissa tarkkailija-suunnittelumalli on toteutettu \mintinline{JavaScript}{Observable}-olioilla, joiden tuottamaa tapahtumavirtaa kuuntelemaan voi rekisteröityä kuuntelija, joka käsittelee tapahtumavirtaan saapuvat tapahtumat \cite{Observables}. Tapahtumavirrassa käsiteltävät arvot voivat olla kontekstista riippuen eri tyyppisiä kuten esimerkiksi vakioita, viestejä tai tapahtumia \cite{Observables}.
+
+\mintinline{JavaScript}{Observable}-olioissa määritellään funktio, jossa määritellään \mintinline{JavaScript}{Observable}-olion tapahtumavirtaan tuotetut arvot \cite{Observables}. Tätä \mintinline{JavaScript}{Observable}-oliossa määriteltyä funktiota ei kuitenkaan suoriteta ennen kuin kuuntelija rekisteröityy kuuntelemaan \mintinline{JavaScript}{Observable}-olion tapahtumavirtaa \cite{Observables}. \mintinline{JavaScript}{Observable}-olio toimittaa tapahtumavirtaan rekisteröityneelle kuuntelijalle viestejä niin kauan kuin funktion suoritus kestää tai kunnes kuuntelija lakkaa kuuntelemasta tapahtumavirtaa \cite{Observables}. 
+
 
 \subsection{Sovelluskohtainen erikoistaminen}
 
@@ -386,17 +391,83 @@ export class SalesTaxComponent {
 }
 \end{lstlisting}
 
-Pitäisikö tähän vielä lisätä "kutakin aliluokkaryhmää kohti" yksi esimerkki --> eli moduuli ja service
+TOTOTOTOTOTOTOTOTOT
+Sovelluskohtaisesti Angular-sovelluksen erikoistaminen tapahtuu metadatan ja dekoraattorien avulla. Sekä komponenteilla, palveluilla että moduuleilla on jokaisella oma dekoraattori. Esimerkiksi \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään Angular-sovelluksessa tavallisesta JavaScript-luokasta komponentti \cite{ArchitectureComponents}. \mintinline{JavaScript}{@Component}-dekoraattorin metadatan avulla määritellään muun muassa, mitä palveluita komponenttiin injektoidaan ja mitä templaattia komponentti käyttää \cite{ArchitectureComponents}. 
 
-Kontrollin kulku sovelluksessa --> Todo: Sekvenssikaavio: sis. datan tuleminen backendiltä frontille async-kutsulla (reducers), käyttäjä muuttaa usernamea palvelussa (two-way-data-binding esimerkki)
+Esimerkissä \ref{lst:SalesTaxService} on esitelty SalesTaxService-komponentti \cite{ExampleApplication}. \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään riveillä 5 ... 17 metadata, jonka avulla \mintinline{JavaScript}{SalesTaxComponent}-luokasta tehdään Angular-komponentti. Metadatassa määritellään muun muassa, että \mintinline{JavaScript}{SalesTaxService}- ja \mintinline{JavaScript}{TaxRateService}-palvelut injektoidaan riippuvuusinjektion avulla \mintinline{JavaScript}{SalesTaxComponent}-komponenttiin. Lisäksi \mintinline{JavaScript}{@Component}-dekoraattorissa on määritelty \mintinline{JavaScript}{SalesTaxComponent}-komponentin templaatti riveillä 7 ... 15. 
+DODODODODODOODODODODODO
+
+\begin{lstlisting}[style=htmlcssjs, caption=SalesTaxService-palvelu \protect\cite{ExampleApplication}, label=lst:SalesTaxService ]
+import { Injectable } from '@angular/core';
+import { TaxRateService } from './tax-rate.service';
+
+@Injectable()
+export class SalesTaxService {
+  constructor(private rateService: TaxRateService) { }
+
+  getVAT(value: string | number) {
+    let amount = (typeof value === 'string') ?
+      parseFloat(value) : value;
+    return (amount || 0) * this.rateService.getRate('VAT');
+  }
+}
+\end{lstlisting}
 
 \section{Kehyksen arviointi}
 
-Kehyksen arviointi - hyvät ja huonot puolet tässä esille
+Angular web-sovelluskehyksellä toteutetun web-ohjelmiston arkkitehtuurissa on sekä hyviä että huonoja puolia.
+
+Angularissa käytetään \mintinline{JavaScript}{Observable}-olioita tarkkailija-suunnittelumallin toteuttamiseen. Yhtenä etuna \mintinline{JavaScript}{Observable}-olioiden käytössä on, että \mintinline{JavaScript}{Observable}-olion tapahtumien kuuntelijoille tarjoama rajapinta tapahtumavirtaan rekisteröitymiseksi on sama riippumatta siitä, tapahtuvatko tapahtumat asynkronisesti vai eivät \cite{Observables}. 
+
+Angularissa hyödynnetään \mintinline{JavaScript}{Observable}-olioita myös Angularin sisäisessä toteutuksessa. Esimerkiksi Angularin sisäinen \mintinline{JavaScript}{HttpClient}-luokka palauttaa \mintinline{JavaScript}{Observable}-olioita HTTP-pyyntöjen vastauksina \cite{HttpClient}. Yksi hyöty HTTP-pyyntöjen toteuttamisessa \mintinline{JavaScript}{Observable}-olioilla on, että tapahtumien kuuntelijan on mahdollista toistaa helposti \mintinline{JavaScript}{Observable}-olioiden avulla toteutetut HTTP-pyynnöt \cite{ObservablesInAngular}. Tämä mahdollistaa myös HTTP-pyyntöjen helpon perumisen, sillä kuuntelija voi perua pyynnön rekisteröitymällä pois tapahtumavirrasta. Koska \mintinline{JavaScript}{Observable}-olioita hyödynnetään myös Angularin sisäisessä toteutuksessa, on kehittäjän helppo ottaa tämä ratkaisumalli käyttöön myös toteuttaessaan itse Angular web-ohjelmistoa ja miettiessään oman ohjelmistonsa arkkitehtuuria. 
+
+Yksi haaste Angularin komponentteihin pohjautuvassa rakenteessa on, että sovelluksen jakaminen komponentteihin toimivalla tavalla voi olla haastavaa. Kysymyksiä, joita komponentteihin jaon yhteydessä herää ovat muun muassa: minkälainen Angular web-sovelluksen rakenne tulisi olla, kuinka komponenteista tehdään uudelleenkäytettäviä ja kuinka komponentit kommunikoivat keskenään \cite{SmartVsPresentationalComponents}? 
+
+Angular web-sovelluskehyksellä toteutetut ohjelmistojen yksi huono puoli on ollut, että jopa ''Hello World''-sovelluksen tiivistetyn version koko on vaihdellut 45Kb:n ja 36Kb:n välillä \cite{ngConf2016,ngConf2018}. Angulariin on kuitenkin kehitteillä uusi renderöijä Ivy, jonka avulla tiivistetyn ''Hello World''-sovelluksen koko on saatu pienennettyä 2,7Kb:n kokoiseksi \cite{ngConf2018,ivyStatus}.
+
 
 \subsection{Laatuskenaariot}
 
-Laatuskenaariot
+Laatuskenaarioiden avulla voidaan arvioida laatuominaisuuksia. Seuraavassa on ATAM-pohjaisia laatuskenaarioita, joiden avulla arvioidaan uudelleenkäytettävyyttä ja muunneltavuutta. 
+
+
+\begin{table}[H]
+\begin{tabular}{|
+>{\columncolor[HTML]{FFFFE2}}p{5cm} |p{9.5cm}|}
+\hline
+\multicolumn{2}{|l|}{\cellcolor[HTML]{D9FFD8}\textbf{Laatuominaisuus: uudelleenkäytettävyys}} \\ \hline
+\textbf{Tarkennus}                            & Komponentin uudelleenkäyttö        \\ \hline
+\textbf{Skenaario}                            & Lomakekenttä-komponenttia voidaan hyödyntää sovelluksen eri osassa      \\ \hline
+\textbf{Painotus (vaativuus, työmäärä)}          & (L, L)                  \\ \hline
+\textbf{To\-teu\-tu\-mis\-mah\-dol\-li\-suuk\-si\-en kuvaus}    & Angularin komponenttipohjaisuus tukee ohjelmiston jakamista komponentteihin, joten uudelleenkäytettävien komponenttien tekemiseksi ei vaadita muutoksia sovelluskehykseen. Vaikka toimivasti jaoteltujen komponenttien toteuttaminen saattaa olla työlästä, on lomakekenttä-komponentti yksittäinen pieni ja tarkasti määritelty komponentti, joten toteuttamisen työmäärä ei olisi todennäköisesti suuri.   \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\begin{tabular}{|
+>{\columncolor[HTML]{FFFFE2}}p{5cm} |p{9.5cm}|}
+\hline
+\multicolumn{2}{|l|}{\cellcolor[HTML]{D9FFD8}\textbf{Laatuominaisuus: uudelleenkäytettävyys}} \\ \hline
+\textbf{Tarkennus}                            & Moduulien uudelleenkäyttö        \\ \hline
+\textbf{Skenaario}                            & \mintinline{JavaScript}{FormsModule}-moduulia voi hyödyntää oman ohjelmiston toteuttamisessa      \\ \hline
+\textbf{Painotus (vaativuus, työmäärä)}          & (L, L)                  \\ \hline
+\textbf{To\-teu\-tu\-mis\-mah\-dol\-li\-suuk\-si\-en kuvaus}    & Angularin modulaarinen arkkitehtuurityyli mahdollistaa moduulien vaivattoman käyttöönoton moduulien importoimisen avulla, joten Angular sovelluskehys tukee kirjastoitujen moduulien käyttöä. Kirjastoidut moduulit, kuten \mintinline{JavaScript}{FormsModule}-moduuli \cite{FormsModule}, voidaan ottaa käyttöön helposti seuraavasti: \mintinline{JavaScript}{import { FormsModule } from '@angular/forms';}   \\ \hline
+\end{tabular}
+\end{table}
+
+
+\begin{table}[H]
+\begin{tabular}{|
+>{\columncolor[HTML]{FFFFE2}}p{5cm} |p{9.5cm}|}
+\hline
+\multicolumn{2}{|l|}{\cellcolor[HTML]{D9FFD8}\textbf{Laatuominaisuus: muunneltavuus}} \\ \hline
+\textbf{Tarkennus}                            & JavaScriptin käyttäminen        \\ \hline
+\textbf{Skenaario}                            & Siirtyminen TypeScriptin käyttämisestä JavaScriptin käyttämiseen ohjelmiston toteuttamisessa      \\ \hline
+\textbf{Painotus (vaativuus, työmäärä)}          & (M, H)                  \\ \hline
+\textbf{To\-teu\-tu\-mis\-mah\-dol\-li\-suuk\-si\-en kuvaus}    & Angular web-sovelluskehys on toteutettu TypeScript-ohjelmoitikielellä toteutetuilla kirjastoilla. Siirtyminen käyttämään omassa ohjelmistossa JavaScriptiä TypeScriptin sijaan määrittelee Angularin rajoja. Siirtyminen JavaScriptin käyttöön on mahdollista, mutta se voi olla työlästä.   \\ \hline
+\end{tabular}
+\end{table}
 
 
 \section{Yhteenveto}
