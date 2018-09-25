@@ -294,9 +294,10 @@ showstringspaces=false,      % Leerzeichen in Strings anzeigen ?
 
 \section{Johdanto}
 
-Angular on asiakaspuolen web-sovelluskehys ja -sovellusalusta, jonka avulla voidaan toteuttaa asiakaspuolen web-ohjelmistoja \cite{ArchitectureOverview}. Tässä harjoitustyössä käsitellään Angularia versiopäivityksen 2.0 jälkeen. Harjoitustyön kirjoittamishetkellä viimeisin Angularin pääversio on Angular 6.0.
+Angular on asiakaspuolen web-sovelluskehys ja -sovellusalusta, jonka avulla voidaan toteuttaa asiakaspuolen web-ohjelmistoja \cite{ArchitectureOverview}. Tässä harjoitustyössä käsitellään Angularia 2.0 versiopäivityksen jälkeen. Harjoitustyön kirjoittamishetkellä viimeisin Angularin pääversio on Angular 6.
 
-Angularin arkkitehtuurityylejä ovat modulaarisuus ja komponenttipohjaisuus \cite{ArchitectureModules,ArchitectureComponents}. Angularissa on oma modulaarisuusjärjestelmä. Angularin moduulit koostuvat komponenteista. Angular toteuttaa myös useita ohjelmistotason ratkaisumalleja kuten riippuvuusinjektion ja yhdensuuntaisen tiedonsiirron.
+Angularin arkkitehtuurityylejä ovat modulaarisuus ja komponenttipohjaisuus \cite{ArchitectureModules,ArchitectureComponents}. Angularissa on oma modulaarisuusjärjestelmänsä, ja Angularin moduulit koostuvat komponenteista. Angularissa toteutetaan myös useita ohjelmistotason ratkaisumalleja kuten riippuvuusinjektio ja yhdensuuntainen tiedonsiirto.
+
 
 % \newpage
 
@@ -316,12 +317,9 @@ Toinen Angularin arkkitehtuurityyleistä on komponenttipohjaisuus. Angular-moduu
 
 Yhdessä komponenttilogiikka ja komponenttiin liittyvä templaatti määrittelevät \textit{näkymän} (\textit{view}) \cite{ArchitectureModules}. Näkymät ovat sovelluksessa yksittäisiä osia, jotka kontrolloivat yhtä osaa ruudulla näkyvästä sisällöstä \cite{ArchitectureComponents}. Näkymät voivat muodostaa puumaisen hierarkian, sillä näkymissä voidaan viitata toisiin näkymiin sekä saman moduulin sisällä että importoiduissa moduuleissa \cite{ArchitectureModules}. 
 
-Templaatit toteutetaan HTML-kielellä ja Angularin omalla templaatti syntaksilla, jonka avulla HTML-rakennetta voidaan muuttaa sovelluslogiikan perusteella \cite{ArchitectureComponents}. Templaateissa voidaan käyttää \textit{direktiivejä} (\textit{directive}) sovelluslogiikan tuomiseen templaattiin \cite{TemplateSyntax}. Kuvassa \ref{fig:AngularAppArchitectureOverview} direktiivistä esimerkkinä toimii \mintinline{JavaScript}{*ngIf}, joka löytyy liilasta laatikosta juuritemplaatti-laatikon sisältä. 
+Templaatit toteutetaan HTML-kielellä ja Angularin omalla templaatti syntaksilla, jonka avulla HTML-rakennetta voidaan muuttaa sovelluslogiikan perusteella \cite{ArchitectureComponents}. Templaateissa voidaan käyttää \textit{direktiivejä} (\textit{directive}) sovelluslogiikan tuomiseksi templaattiin \cite{TemplateSyntax}. Kuvassa \ref{fig:AngularAppArchitectureOverview} direktiivistä esimerkkinä toimii \mintinline{JavaScript}{*ngIf}, joka löytyy liilasta laatikosta juuritemplaatti-laatikon sisältä. 
 
 \textit{Datasidonnan} (\textit{data binding}) avulla yhdistetään templaatissa DOM-mallissa näytettävä data ja komponentin sovelluslogiikassa käsiteltävä data toisiinsa \cite{ArchitectureComponents}. Templaatissa käytettävästä datasidontasyntaksista kuvassa \ref{fig:AngularAppArchitectureOverview} esimerkkeinä toimivat \mintinline{JavaScript}{[user]}, \mintinline{JavaScript}{(click)}, \mintinline{JavaScript}{[(ngModel)]} ja \mintinline{JavaScript}{{{user.name}}}. Toisiin komponentteihin viittaamisesta kuvassa \ref{fig:AngularAppArchitectureOverview} esimerkkinä toimii HTML-tagi \mintinline{JavaScript}{<app-user-detail>}.
-
-Yksi Angularin modulaarisuutta ja uudelleenkäytettävyyttä tukeva piirre on erottaa palvelut komponenteista \cite{ArchitectureServices}. Palvelut ovat luokkia, joiden avulla voidaan toteuttaa yksi hyvin määritelty sovelluksen tarvitsema toiminnallisuus. Kuvassa \ref{fig:AngularAppArchitectureOverview} palvelut on kuvattu punaisilla laatikoilla. Palveluita voidaan injektoida komponentteihin riippuvuuksina \cite{ArchitectureServices}. 
-
 
 \begin{figure}[H]
   \centering
@@ -330,13 +328,18 @@ Yksi Angularin modulaarisuutta ja uudelleenkäytettävyyttä tukeva piirre on er
   \label{fig:AngularAppArchitectureOverview}
 \end{figure}
 
+Yksi Angularin modulaarisuutta ja uudelleenkäytettävyyttä tukeva piirre on erottaa palvelut komponenteista \cite{ArchitectureServices}. Palvelut ovat luokkia, joiden avulla voidaan toteuttaa yksi hyvin määritelty sovelluksen tarvitsema toiminnallisuus. Kuvassa \ref{fig:AngularAppArchitectureOverview} palvelut on kuvattu punaisilla laatikoilla. Palveluita voidaan injektoida komponentteihin riippuvuuksina \cite{ArchitectureServices}. 
+
+\newpage
+
+
 \section{Kehyksen yleiskuva}
 
 Angular web-sovelluskehys pohjautuu modulaariseen komponenttipohjaiseen arkkitehtuurityyliin. Angular toteuttaa kuitenkin myös useita ohjelmistotason ratkaisumalleja, joita ovat esimerkiksi riippuvuusinjektio, yhdensuuntainen tiedonsiirto ja tarkkailija-suunnittelumallin käyttö.
 
 \subsection{Ohjelmistotason ratkaisumallit}
 
-Yksi Angularissa sovellettavista ohjelmistotason ratkaisumalleista on \textit{riippuvuusinjektio} (\textit{dependency injection}), jonka avulla komponenteille voidaan tuoda käyttöön niiden tarvitsemaa lisätoiminnallisuutta \cite{DependencyInjectionPattern}. Angularissa riippuvuusinjektion avulla komponenteille voidaan tarjota palveluissa toteutettua uudelleenkäytettävää toiminnallisuutta. Palvelut voidaan injektoida niin, että palvelun näkyvyysalue on koko sovelluksen laajuisesti, tietyn moduulin sisällä tai tietyn komponentin sisällä \cite{DependencyInjection}. Palveluiden näkyvyysalueet tulevat esiin myös kuvasta \ref{fig:AngularAppArchitectureOverview} punaisten palvelu-laatikoiden sijoittelusta moduuli- ja komponenttilaatikoiden sisä- ja ulkopuolelle.
+Yksi Angularissa sovellettavista ohjelmistotason ratkaisumalleista on \textit{riippuvuusinjektio} (\textit{dependency injection}), jonka avulla komponenteille voidaan tuoda käyttöön niiden tarvitsemaa lisätoiminnallisuutta \cite{DependencyInjectionPattern}. Riippuvuusinjektion avulla komponenteille voidaan tarjota palveluissa toteutettua uudelleenkäytettävää toiminnallisuutta. Palvelut voidaan injektoida niin, että palvelun näkyvyysalue on koko sovelluksen laajuisesti, tietyn moduulin sisällä tai tietyn komponentin sisällä \cite{DependencyInjection}. Palveluiden näkyvyysalueet tulevat esiin myös kuvasta \ref{fig:AngularAppArchitectureOverview} punaisten palvelu-laatikoiden sijoittelusta moduuli- ja komponenttilaatikoiden sisä- ja ulkopuolelle.
 
 Toinen Angularissa sovellettavista ratkaisumalleista on \textit{yhdensuuntainen tiedonsiirto} (\textit{unidirectional data flow}). Angularissa DOM-mallissa näytettävä data ja komponentin sovelluslogiikassa käsiteltävä data yhdistetään toisiinsa datasidonnan avulla \cite{TemplateSyntax}. Datasidontaa on kolmea eri tyyppiä: datan lähteeltä näkymää kohti (\textit{source-to-view}), näkymästä datan lähdettä kohti (\textit{view-to-source}) ja kahdensuuntainen datasidonta (\textit{view-to-source-to-view}), joka on yhdistelmä kahdesta ensin mainitusta datasidontatyypistä \cite{TemplateSyntax}. 
 
@@ -349,9 +352,11 @@ Tarkkailija-suunnittelumallia käytetään Angularissa muun muassa tapahtumien l
 
 \subsection{Sovelluskohtainen erikoistaminen}
 
-Angular-sovelluskehyksellä toteutettu sovellus koostuu sovelluskohtaisista osista ja Angular-kehykseen kuuluvista osista. Angular-kehys tarjoaa moduuleja sovellusten käyttöön importoitavina kirjastoina \cite{NgModules}. Kuvassa \ref{fig:UMLDiagramExampleApp} esitellään Angularin arkkitehtuuria kuvaavan esimerkkisovelluksen \cite{ExampleApplication} luokkakaavio. Kuvassa Angular-sovelluskehyksen tarjoamat moduulit ja palvelut on merkitty mustilla laatikoilla ja stereotyypillä \mintinline{JavaScript}{<<Framework>>}. Sovelluskohtaiset ja sovelluskohtaisesti erikoistetut osat on merkitty kuvaan punaisilla, vihreillä, keltaisilla, liiloilla ja sinisillä laatikoilla ja stereotyypeillä \mintinline{JavaScript}{<<Application>>} ja \mintinline{JavaScript}{<<Application - required>>}. Kuvasta nähdään, että sovelluskohtaisesti erikoistettu juurimoduuli AppModule importoi Angular-kehyksen tarjoamat moduulit FormsModule, NgModule ja BrowserModule käyttöönsä.
+Angular-sovelluskehyksellä toteutettu sovellus koostuu sovelluskohtaisista osista ja Angular-kehykseen kuuluvista osista. Angular-kehys tarjoaa moduuleja sovellusten käyttöön importoitavina kirjastoina \cite{NgModules}. Kuvassa \ref{fig:UMLDiagramExampleApp} esitellään Angularin arkkitehtuuria kuvaavan esimerkkisovelluksen \cite{ExampleApplication} luokkakaavio. Kuvassa Angular-sovelluskehyksen tarjoamat moduulit ja palvelut on merkitty mustilla laatikoilla ja stereotyypillä \mintinline{JavaScript}{<<Framework>>}. Sovelluskohtaiset ja sovelluskohtaisesti erikoistetut osat on merkitty kuvaan punaisilla, vihreillä, keltaisilla, liiloilla ja sinisillä laatikoilla ja stereotyypeillä \mintinline{JavaScript}{<<Application>>} ja \mintinline{JavaScript}{<<Application - required>>}. Kuvasta nähdään, että sovelluskohtaisesti erikoistettu juurimoduuli \mintinline{JavaScript}{AppModule} importoi Angular-kehyksen tarjoamat moduulit \mintinline{JavaScript}{FormsModule}, \mintinline{JavaScript}{NgModule} ja \mintinline{JavaScript}{BrowserModule} käyttöönsä.
 
-Angular-kehys vaatii, että jokaisella sovelluksella on vähintään juurimoduuli, jonka sisällä on juurikomponentti. Kuvassa \ref{fig:UMLDiagramExampleApp} AppModule ja AppComponent vastaavat juurimoduulia ja -komponenttia. Angular-sovellukseen kuuluu myös konfiguraatiotiedostoja, joista esimerkiksi Angular.json-tiedostossa konfiguroidaan Angular CLI -komentorivityökalua \cite{QuickStart}. Sovelluksen juurena toimivat main.ts- ja index.html-tiedostot. Main.ts-tiedostossa määritellään muun muassa sovelluksen juurimoduuli, josta sovellus käynnistetään ja index.html-tiedosto on sovelluksen pääsivu, joka näytetään käyttäjälle käyttäjän vieraillessa sovelluksen sivulla \cite{QuickStart}.
+Angular-kehys vaatii, että jokaisella sovelluksella on vähintään juurimoduuli, jonka sisällä on juurikomponentti. Kuvassa \ref{fig:UMLDiagramExampleApp} \mintinline{JavaScript}{AppModule} ja \mintinline{JavaScript}{AppComponent} vastaavat juurimoduulia ja -komponenttia. Angular-sovellukseen kuuluu myös konfiguraatiotiedostoja, joista esimerkiksi \mintinline{JavaScript}{Angular.json}-tiedostossa konfiguroidaan Angular CLI -komentorivityökalua \cite{QuickStart}. Sovelluksen juurena toimivat \mintinline{JavaScript}{main.ts}- ja \mintinline{JavaScript}{index.html}-tiedostot. \mintinline{JavaScript}{Main.ts}-tiedostossa määritellään muun muassa sovelluksen juurimoduuli, josta sovellus käynnistetään ja \mintinline{JavaScript}{index.html}-tiedosto on sovelluksen pääsivu, joka näytetään käyttäjälle käyttäjän vieraillessa sovelluksen sivulla \cite{QuickStart}.
+
+Sovelluskohtaisesti Angular-sovelluksen erikoistaminen tapahtuu metadatan ja dekoraattorien avulla. Sekä komponenteilla, palveluilla että moduuleilla on jokaisella oma dekoraattori. Esimerkiksi \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään Angular-sovelluksessa tavallisesta JavaScript-luokasta komponentti \cite{ArchitectureComponents}. \mintinline{JavaScript}{@Component}-dekoraattorin metadatan avulla määritellään muun muassa, mitä palveluita komponenttiin injektoidaan ja mitä templaattia komponentti käyttää \cite{ArchitectureComponents}. 
 
 \begin{figure}[H]
   \centering
@@ -360,9 +365,7 @@ Angular-kehys vaatii, että jokaisella sovelluksella on vähintään juurimoduul
   \label{fig:UMLDiagramExampleApp}
 \end{figure}
 
-Sovelluskohtaisesti Angular-sovelluksen erikoistaminen tapahtuu metadatan ja dekoraattorien avulla. Sekä komponenteilla, palveluilla että moduuleilla on jokaisella oma dekoraattori. Esimerkiksi \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään Angular-sovelluksessa tavallisesta JavaScript-luokasta komponentti \cite{ArchitectureComponents}. \mintinline{JavaScript}{@Component}-dekoraattorin metadatan avulla määritellään muun muassa, mitä palveluita komponenttiin injektoidaan ja mitä templaattia komponentti käyttää \cite{ArchitectureComponents}. 
-
-Esimerkissä \ref{lst:SalesTaxComponent} on esitelty SalesTaxComponent-komponentti \cite{ExampleApplication}. \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään riveillä 5 ... 17 metadata, jonka avulla \mintinline{JavaScript}{SalesTaxComponent}-luokasta tehdään Angular-komponentti. Metadatassa määritellään muun muassa, että \mintinline{JavaScript}{SalesTaxService}- ja \mintinline{JavaScript}{TaxRateService}-palvelut injektoidaan riippuvuusinjektion avulla \mintinline{JavaScript}{SalesTaxComponent}-komponenttiin. Lisäksi \mintinline{JavaScript}{@Component}-dekoraattorissa on määritelty \mintinline{JavaScript}{SalesTaxComponent}-komponentin templaatti riveillä 7 ... 15. 
+Esimerkissä \ref{lst:SalesTaxComponent} on esitelty \mintinline{JavaScript}{SalesTaxComponent}-komponentti \cite{ExampleApplication}. \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään riveillä 5 ... 17 metadata, jonka avulla \mintinline{JavaScript}{SalesTaxComponent}-luokasta tehdään Angular-komponentti. Metadatassa määritellään muun muassa, että \mintinline{JavaScript}{SalesTaxService}- ja \mintinline{JavaScript}{TaxRateService}-palvelut injektoidaan riippuvuusinjektion avulla \mintinline{JavaScript}{SalesTaxComponent}-komponenttiin. Lisäksi \mintinline{JavaScript}{@Component}-dekoraattorissa on määritelty \mintinline{JavaScript}{SalesTaxComponent}-komponentin templaatti riveillä 7 ... 15. 
 
 \begin{lstlisting}[style=htmlcssjs, caption=SalesTaxComponent-komponentti \protect\cite{ExampleApplication}, label=lst:SalesTaxComponent ]
 import { Component }       from '@angular/core';
@@ -391,11 +394,7 @@ export class SalesTaxComponent {
 }
 \end{lstlisting}
 
-TOTOTOTOTOTOTOTOTOT
-Sovelluskohtaisesti Angular-sovelluksen erikoistaminen tapahtuu metadatan ja dekoraattorien avulla. Sekä komponenteilla, palveluilla että moduuleilla on jokaisella oma dekoraattori. Esimerkiksi \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään Angular-sovelluksessa tavallisesta JavaScript-luokasta komponentti \cite{ArchitectureComponents}. \mintinline{JavaScript}{@Component}-dekoraattorin metadatan avulla määritellään muun muassa, mitä palveluita komponenttiin injektoidaan ja mitä templaattia komponentti käyttää \cite{ArchitectureComponents}. 
-
-Esimerkissä \ref{lst:SalesTaxService} on esitelty SalesTaxService-komponentti \cite{ExampleApplication}. \mintinline{JavaScript}{@Component}-dekoraattorilla määritellään riveillä 5 ... 17 metadata, jonka avulla \mintinline{JavaScript}{SalesTaxComponent}-luokasta tehdään Angular-komponentti. Metadatassa määritellään muun muassa, että \mintinline{JavaScript}{SalesTaxService}- ja \mintinline{JavaScript}{TaxRateService}-palvelut injektoidaan riippuvuusinjektion avulla \mintinline{JavaScript}{SalesTaxComponent}-komponenttiin. Lisäksi \mintinline{JavaScript}{@Component}-dekoraattorissa on määritelty \mintinline{JavaScript}{SalesTaxComponent}-komponentin templaatti riveillä 7 ... 15. 
-DODODODODODOODODODODODO
+Esimerkissä \ref{lst:SalesTaxService} on esitelty \mintinline{JavaScript}{SalesTaxService}-palvelu \cite{ExampleApplication}. \mintinline{JavaScript}{@Injectable}-dekoraattorilla määritellään, että JavaScript-luokkaan voidaan injektoida muita palveluita \cite{ArchitectureServices}. \mintinline{JavaScript}{@Injectable}-dekoraattorin metadatan voidaan määritellä myös, että JavaScript-luokka on injektoitavissa komponenttiin riippuvuutena \cite{ArchitectureServices}. \mintinline{JavaScript}{@Injectable}-dekoraattori löytyy esimerkistä \ref{lst:SalesTaxService} riviltä 4. Tässä esimerkissä \mintinline{JavaScript}{@Injectable}-dekoraattorin käyttö mahdollistaa \mintinline{JavaScript}{TaxRateService}-palvelun injektoimisen \mintinline{JavaScript}{SalesTaxService}-palveluun rivillä 6.
 
 \begin{lstlisting}[style=htmlcssjs, caption=SalesTaxService-palvelu \protect\cite{ExampleApplication}, label=lst:SalesTaxService ]
 import { Injectable } from '@angular/core';
@@ -413,17 +412,56 @@ export class SalesTaxService {
 }
 \end{lstlisting}
 
+\mintinline{JavaScript}{@NgModule}-dekoraattorin metadatan avulla kuvataan Angular-moduuli \cite{ArchitectureModules}. Esimerkissä \ref{lst:AppModule} määritellään Angular-esimerkkisovelluksen juurimoduuli \mintinline{JavaScript}{AppModule} \cite{ExampleApplication}. Esimerkissä \mintinline{JavaScript}{@NgModule}-dekoraattorin metadatassa on määritelty riveillä 13 ... 16 toiset moduulit, joita \mintinline{JavaScript}{AppModule}-moduulin sisällä olevat komponentit tarvitsevat. Riveillä 17 ... 22 määritellään \mintinline{JavaScript}{declarations}-ominaisuuden sisällä komponentit, jotka kuuluvat \mintinline{JavaScript}{AppModule}-moduulin sisälle. \mintinline{JavaScript}{declarations}-ominaisuuden sisällä voidaan määritellä myös direktiivit, jotka kuuluvat tietyn moduulin sisälle \cite{ArchitectureModules}. \mintinline{JavaScript}{providers}-ominaisuudessa riveillä 23 ... 27 määritellään palvelut, joiden näkyvyysalue on koko sovelluksen laajuinen. Riviltä 28 löytyy viittaus \mintinline{JavaScript}{AppComponent}-juurikomponenttiin \mintinline{JavaScript}{bootstrap}-ominaisuuden sisältä.
+
+\newpage
+
+
+\begin{lstlisting}[style=htmlcssjs, caption=AppModule-moduuli \protect\cite{ExampleApplication}, label=lst:AppModule ]
+import { BrowserModule }       from '@angular/platform-browser';
+import { FormsModule }         from '@angular/forms';
+import { NgModule }     	   from '@angular/core';
+import { AppComponent } 	   from './app.component';
+import { HeroDetailComponent } from './hero-detail.component';
+import { HeroListComponent }   from './hero-list.component';
+import { SalesTaxComponent }   from './sales-tax.component';
+import { HeroService }         from './hero.service';
+import { BackendService }      from './backend.service';
+import { Logger }              from './logger.service';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    FormsModule
+  ],
+  declarations: [
+    AppComponent,
+    HeroDetailComponent,
+    HeroListComponent,
+    SalesTaxComponent
+  ],
+  providers: [
+    BackendService,
+    HeroService,
+    Logger
+  ],
+  bootstrap: [ AppComponent ]
+})
+export class AppModule { }
+
+\end{lstlisting}
+
+\newpage
+
 \section{Kehyksen arviointi}
 
-Angular web-sovelluskehyksellä toteutetun web-ohjelmiston arkkitehtuurissa on sekä hyviä että huonoja puolia.
+Angular web-sovelluskehyksellä toteutetun web-ohjelmiston arkkitehtuurissa on sekä hyviä että huonoja puolia. Angularissa käytetään \mintinline{JavaScript}{Observable}-olioita tarkkailija-suunnittelumallin toteuttamiseen. Yhtenä etuna \mintinline{JavaScript}{Observable}-olioiden käytössä on, että \mintinline{JavaScript}{Observable}-olion tapahtumien kuuntelijoille tarjoama rajapinta tapahtumavirtaan rekisteröitymiseksi on sama riippumatta siitä, tapahtuvatko tapahtumat asynkronisesti vai eivät \cite{Observables}. 
 
-Angularissa käytetään \mintinline{JavaScript}{Observable}-olioita tarkkailija-suunnittelumallin toteuttamiseen. Yhtenä etuna \mintinline{JavaScript}{Observable}-olioiden käytössä on, että \mintinline{JavaScript}{Observable}-olion tapahtumien kuuntelijoille tarjoama rajapinta tapahtumavirtaan rekisteröitymiseksi on sama riippumatta siitä, tapahtuvatko tapahtumat asynkronisesti vai eivät \cite{Observables}. 
-
-Angularissa hyödynnetään \mintinline{JavaScript}{Observable}-olioita myös Angularin sisäisessä toteutuksessa. Esimerkiksi Angularin sisäinen \mintinline{JavaScript}{HttpClient}-luokka palauttaa \mintinline{JavaScript}{Observable}-olioita HTTP-pyyntöjen vastauksina \cite{HttpClient}. Yksi hyöty HTTP-pyyntöjen toteuttamisessa \mintinline{JavaScript}{Observable}-olioilla on, että tapahtumien kuuntelijan on mahdollista toistaa helposti \mintinline{JavaScript}{Observable}-olioiden avulla toteutetut HTTP-pyynnöt \cite{ObservablesInAngular}. Tämä mahdollistaa myös HTTP-pyyntöjen helpon perumisen, sillä kuuntelija voi perua pyynnön rekisteröitymällä pois tapahtumavirrasta. Koska \mintinline{JavaScript}{Observable}-olioita hyödynnetään myös Angularin sisäisessä toteutuksessa, on kehittäjän helppo ottaa tämä ratkaisumalli käyttöön myös toteuttaessaan itse Angular web-ohjelmistoa ja miettiessään oman ohjelmistonsa arkkitehtuuria. 
+Angularissa hyödynnetään \mintinline{JavaScript}{Observable}-olioita myös Angularin sisäisessä toteutuksessa. Esimerkiksi Angularin sisäinen \mintinline{JavaScript}{HttpClient}-luokka palauttaa \mintinline{JavaScript}{Observable}-olioita HTTP-pyyntöjen vastauksina \cite{HttpClient}. Yksi hyöty HTTP-pyyntöjen toteuttamisessa \mintinline{JavaScript}{Observable}-olioilla on, että tapahtumien kuuntelijan on mahdollista toistaa helposti \mintinline{JavaScript}{Observable}-olioiden avulla toteutetut HTTP-pyynnöt \cite{ObservablesInAngular}. Tämä mahdollistaa myös HTTP-pyyntöjen helpon perumisen, sillä kuuntelija voi perua pyynnön rekisteröitymällä pois tapahtumavirrasta. Koska \mintinline{JavaScript}{Observable}-olioita hyödynnetään myös Angularin sisäisessä toteutuksessa, on kehittäjän helppo ottaa tämä ratkaisumalli käyttöön myös toteuttaessaan itse Angular-ohjelmistoa ja miettiessään oman ohjelmistonsa arkkitehtuuria. 
 
 Yksi haaste Angularin komponentteihin pohjautuvassa rakenteessa on, että sovelluksen jakaminen komponentteihin toimivalla tavalla voi olla haastavaa. Kysymyksiä, joita komponentteihin jaon yhteydessä herää ovat muun muassa: minkälainen Angular web-sovelluksen rakenne tulisi olla, kuinka komponenteista tehdään uudelleenkäytettäviä ja kuinka komponentit kommunikoivat keskenään \cite{SmartVsPresentationalComponents}? 
 
-Angular web-sovelluskehyksellä toteutetut ohjelmistojen yksi huono puoli on ollut, että jopa ''Hello World''-sovelluksen tiivistetyn version koko on vaihdellut 45Kb:n ja 36Kb:n välillä \cite{ngConf2016,ngConf2018}. Angulariin on kuitenkin kehitteillä uusi renderöijä Ivy, jonka avulla tiivistetyn ''Hello World''-sovelluksen koko on saatu pienennettyä 2,7Kb:n kokoiseksi \cite{ngConf2018,ivyStatus}.
+Angular web-sovelluskehyksellä toteutettujen ohjelmistojen yksi huono puoli on ollut, että jopa ''Hello World''-sovelluksen tiivistetyn version koko on vaihdellut 45Kb:n ja 36Kb:n välillä \cite{ngConf2016,ngConf2018}. Angulariin on kuitenkin kehitteillä uusi renderöijä Ivy, jonka avulla tiivistetyn ''Hello World''-sovelluksen koko on saatu pienennettyä 2,7Kb:n kokoiseksi \cite{ngConf2018,ivyStatus}.
 
 
 \subsection{Laatuskenaariot}
@@ -462,17 +500,21 @@ Laatuskenaarioiden avulla voidaan arvioida laatuominaisuuksia. Seuraavassa on AT
 >{\columncolor[HTML]{FFFFE2}}p{5cm} |p{9.5cm}|}
 \hline
 \multicolumn{2}{|l|}{\cellcolor[HTML]{D9FFD8}\textbf{Laatuominaisuus: muunneltavuus}} \\ \hline
-\textbf{Tarkennus}                            & JavaScriptin käyttäminen        \\ \hline
+\textbf{Tarkennus}                            & JavaScriptin käyttäminen Angularissa       \\ \hline
 \textbf{Skenaario}                            & Siirtyminen TypeScriptin käyttämisestä JavaScriptin käyttämiseen ohjelmiston toteuttamisessa      \\ \hline
 \textbf{Painotus (vaativuus, työmäärä)}          & (M, H)                  \\ \hline
 \textbf{To\-teu\-tu\-mis\-mah\-dol\-li\-suuk\-si\-en kuvaus}    & Angular web-sovelluskehys on toteutettu TypeScript-ohjelmoitikielellä toteutetuilla kirjastoilla. Siirtyminen käyttämään omassa ohjelmistossa JavaScriptiä TypeScriptin sijaan määrittelee Angularin rajoja. Siirtyminen JavaScriptin käyttöön on mahdollista, mutta se voi olla työlästä.   \\ \hline
 \end{tabular}
 \end{table}
 
+\newpage
+
 
 \section{Yhteenveto}
 
-Yhteenveto
+Angular web-sovelluskehys on tarkoitettu asiakaspuolen web-ohjelmistojen toteuttamiseen. Angularilla toteutetut ohjelmistot koostuvat TypeScript-ohjelmointikielellä toteutetuista kirjastoista. Angularilla toteutetut sovellukset koostuvat useasta pääosasta, joita ovat moduulit, komponentit ja palvelut. Arkkitehtuurityylejä Angularissa ovat modulaarisuus ja komponenttipohjaisuus, ja Angularissa sovelletaan lisäksi useita ohjelmistotason ratkaisumalleja.
+
+Yksi Angularin ohjelmistotason ratkaisumalleista on tarkkailija-suunnittelumalli, joka on toteutettu \mintinline{JavaScript}{Observable}-olioiden avulla. \mintinline{JavaScript}{Observable}-olioiden käytössä on useita etuja, mutta Angularissa käytetyissä arkkitehtuurityyleissä on myös huonoja puolia. Esimerkiksi komponenttipohjaisuudessa haasteena on jakaa sovellus uudelleenkäytettäviin komponentteihin. 
 
 
 
@@ -497,7 +539,7 @@ Yhteenveto
 
 
 %\bibliographystyle{babplain-lf}
-% \newpage
+\newpage
 \bibliographystyle{apacite}
 \renewcommand{\BRetrieved}[1]{Tarkistettu {#1}, saatavilla\ }
 \renewcommand{\BRetrievedFrom}{Tarkistettu saatavilla\ }
